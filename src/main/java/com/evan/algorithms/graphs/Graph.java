@@ -1,22 +1,22 @@
 package com.evan.algorithms.graphs;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.evan.algorithms.datastructures.Bag;
 
+// 无向图
 public class Graph {
     private static final String NEWLINE = System.lineSeparator();
 
     private final int vertexCount;
     private int edgeCount;
-    private final List<Integer>[] adj;
+    private final Bag<Integer>[] adj;
 
     public Graph(int vertexCount) {
         if (vertexCount < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
         this.vertexCount = vertexCount;
         this.edgeCount = 0;
-        adj = new ArrayList[vertexCount];
+        adj = new Bag[vertexCount];
         for (int v = 0; v < vertexCount; v++) {
-            adj[v] = new ArrayList<>();
+            adj[v] = new Bag<>();
         }
     }
 
@@ -25,10 +25,9 @@ public class Graph {
         this.edgeCount = g.getEdgeCount();
         if (vertexCount < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
 
-        // update adjacency lists
-        adj = new ArrayList[vertexCount];
+        adj = (Bag<Integer>[]) new Bag[vertexCount];
         for (int v = 0; v < vertexCount; v++) {
-            adj[v] = new ArrayList<>();
+            adj[v] = new Bag<>();
         }
 
         for (int v = 0; v < g.getVertexCount(); v++) {
