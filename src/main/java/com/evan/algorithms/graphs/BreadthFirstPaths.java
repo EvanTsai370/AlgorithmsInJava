@@ -1,0 +1,157 @@
+package com.evan.algorithms.graphs;
+
+import java.util.*;
+
+public class BreadthFirstPaths {
+    private static final Integer INF = Integer.MAX_VALUE;
+    private final boolean[] marked;
+    private final int[] edgeTo; // edgeTo[v] = s-v的路径的最后一条边
+    private final int[] distTo; // distTo[v] = s-v的最短路径长度
+
+    public BreadthFirstPaths(Graph g, int s) {
+        marked = new boolean[g.getVertexCount()];
+        edgeTo = new int[g.getVertexCount()];
+        distTo = new int[g.getVertexCount()];
+        validateVertex(s);
+        bfs(g, s);
+    }
+
+    public BreadthFirstPaths(Graph g, Iterable<Integer> sources) {
+        marked = new boolean[g.getVertexCount()];
+        edgeTo = new int[g.getVertexCount()];
+        distTo = new int[g.getVertexCount()];
+        validateVertices(sources);
+        bfs(g, sources);
+    }
+
+    private void validateVertices(Iterable<Integer> vertices) {
+        if (vertices == null) {
+            throw new IllegalArgumentException("argument is null");
+        }
+        int vertexCount = 0;
+        for (Integer v : vertices) {
+            vertexCount++;
+            if (v == null) {
+                throw new IllegalArgumentException("vertex is null");
+            }
+            validateVertex(v);
+        }
+        if (vertexCount == 0) {
+            throw new IllegalArgumentException("zero vertices");
+        }
+    }
+
+    private void bfs(Graph g, int s) {
+        for (int v = 0; v < g.getVertexCount(); v++) {
+            distTo[v] = INF;
+        }
+        distTo[s] = 0;
+        marked[s] = true;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(s);
+
+        while (!q.isEmpty()) {
+            Integer v = q.poll();
+            for (int w : g.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    q.offer(w);
+                }
+            }
+        }
+    }
+
+    // 多个起点
+    private void bfs(Graph g, Iterable<Integer> sources) {
+        for (int v = 0; v < g.getVertexCount(); v++) {
+            distTo[v] = INF;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (Integer s : sources) {
+            marked[s] = true;
+            distTo[s] = 0;
+            q.offer(s);
+        }
+
+        while (!q.isEmpty()) {
+            Integer v = q.poll();
+            for (int w : g.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    q.offer(w);
+                }
+            }
+        }
+    }
+
+    private void validateVertex(int v) {
+        if (v < 0 || v >= marked.length) {
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (marked.length - 1));
+        }
+    }
+
+    public boolean hasPathTo(int v) {
+        validateVertex(v);
+        return marked[v];
+    }
+
+    public int distTo(int v) {
+        validateVertex(v);
+        return distTo[v];
+    }
+
+    public Iterable<Integer> pathTo(int v) {
+        validateVertex(v);
+        if (!hasPathTo(v)) {
+            return null;
+        }
+        Deque<Integer> path = new ArrayDeque<>();
+        int x;
+        for (x = v; distTo[x] != 0; x = edgeTo[x]) {
+            path.push(x);
+        }
+        path.push(x);
+        return path;
+    }
+
+    public static void main(String[] args) {
+        Graph g = GraphUtils.tinyCG();
+        int s = 0;
+        BreadthFirstPaths bfs = new BreadthFirstPaths(g, s);
+
+        for (int v = 0; v < g.getVertexCount(); v++) {
+            if (bfs.hasPathTo(v)) {
+                System.out.printf("%d to %d (%d):  ", s, v, bfs.distTo(v));
+                for (int x : bfs.pathTo(v)) {
+                    if (x == s) System.out.print(x);
+                    else System.out.print("-" + x);
+                }
+                System.out.println();
+            } else {
+                System.out.printf("%d to %d (-):  not connected\n", s, v);
+            }
+        }
+
+        System.out.println();
+
+        List<Integer> sources = List.of(2, 3);
+        BreadthFirstPaths bfs2 = new BreadthFirstPaths(g, sources);
+
+        for (int v = 0; v < g.getVertexCount(); v++) {
+            if (bfs2.hasPathTo(v)) {
+                System.out.printf(sources + " to %d (%d):  ", v, bfs2.distTo(v));
+                for (int x : bfs2.pathTo(v)) {
+                    if (sources.contains(x)) System.out.print(x);
+                    else System.out.print("-" + x);
+                }
+                System.out.println();
+            } else {
+                System.out.printf(sources + " to %d (-):  not connected\n", s, v);
+            }
+        }
+    }
+}
