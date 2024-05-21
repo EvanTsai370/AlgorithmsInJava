@@ -5,8 +5,8 @@ import java.util.*;
 public class BreadthFirstPaths {
     private static final Integer INF = Integer.MAX_VALUE;
     private final boolean[] marked;
-    private final int[] edgeTo; // edgeTo[v] = s-v的路径的最后一条边
-    private final int[] distTo; // distTo[v] = s-v的最短路径长度
+    private final int[] edgeTo; // edgeTo[v] = s(sources)-v的路径的最后一条边
+    private final int[] distTo; // distTo[v] = s(sources)-v的最短路径长度
 
     public BreadthFirstPaths(Graph g, int s) {
         marked = new boolean[g.getVertexCount()];
@@ -120,6 +120,12 @@ public class BreadthFirstPaths {
 
     public static void main(String[] args) {
         Graph g = GraphUtils.tinyCG();
+        testOneSource(g);
+        System.out.println();
+        testMultipleSources(g);
+    }
+
+    private static void testOneSource(Graph g) {
         int s = 0;
         BreadthFirstPaths bfs = new BreadthFirstPaths(g, s);
 
@@ -135,9 +141,9 @@ public class BreadthFirstPaths {
                 System.out.printf("%d to %d (-):  not connected\n", s, v);
             }
         }
+    }
 
-        System.out.println();
-
+    private static void testMultipleSources(Graph g) {
         List<Integer> sources = List.of(2, 3);
         BreadthFirstPaths bfs2 = new BreadthFirstPaths(g, sources);
 
@@ -150,7 +156,7 @@ public class BreadthFirstPaths {
                 }
                 System.out.println();
             } else {
-                System.out.printf(sources + " to %d (-):  not connected\n", s, v);
+                System.out.printf(sources + " to %d (-):  not connected\n", v);
             }
         }
     }
