@@ -2,19 +2,25 @@ package com.evan.algorithms.graphs;
 
 import com.evan.algorithms.datastructures.Bag;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 // 无向图
 public class Graph {
     private static final String NEWLINE = System.lineSeparator();
 
     private final int vertexCount;
     private int edgeCount;
+    // 数组不能动态地添加或删除元素，也就不支持添加和删除顶点
+    // 为了支持添加和删除顶点、禁止平行边、删除边，可以使用符号表和set
+    // 如Map<String, Set<String>> adjacencySet;
     private final Bag<Integer>[] adj;
 
     public Graph(int vertexCount) {
         if (vertexCount < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
         this.vertexCount = vertexCount;
         this.edgeCount = 0;
-        adj = new Bag[vertexCount];
+        adj = (Bag<Integer>[]) new Bag[vertexCount];
         for (int v = 0; v < vertexCount; v++) {
             adj[v] = new Bag<>();
         }
@@ -31,7 +37,11 @@ public class Graph {
         }
 
         for (int v = 0; v < g.getVertexCount(); v++) {
-            for (Integer w : g.adj[v]) {
+            Deque<Integer> reverse = new ArrayDeque<>();
+            for (int w : g.adj[v]) {
+                reverse.push(w);
+            }
+            for (int w : reverse) {
                 adj[v].add(w);
             }
         }
@@ -83,16 +93,10 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph(5);
-        graph.addEdge(0, 1);
-        graph.addEdge(0, 2);
-        graph.addEdge(1, 3);
-        graph.addEdge(2, 3);
-        graph.addEdge(3, 4);
-        graph.addEdge(2, 4);
-        System.out.println(graph);
-        Graph graph2 = new Graph(graph);
-        System.out.println(graph2);
+        Graph g = GraphUtils.tinyG();
+        System.out.println(g);
+        Graph g2 = new Graph(g);
+        System.out.println(g2);
     }
 }
 
