@@ -5,9 +5,9 @@ import java.util.List;
 
 public class CC {
     private final boolean[] marked;
-    private final int[] id;
-    private final int[] size;
-    private int count;
+    private final int[] id; // id[v] = v所属连通分量id
+    private final int[] size; // size[v] = v所属连通分量的元素个数
+    private int count; // 连通分量的个数
 
     public CC(Graph g) {
         marked = new boolean[g.getVertexCount()];
