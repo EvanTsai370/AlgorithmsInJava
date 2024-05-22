@@ -1,9 +1,12 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
 
 import com.evan.algorithms.datastructures.Bag;
+import com.evan.algorithms.io.In;
 
+import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.NoSuchElementException;
 
 // 无向图
 public class Graph {
@@ -47,6 +50,31 @@ public class Graph {
         }
     }
 
+    public Graph(In in) {
+        if (in == null) throw new IllegalArgumentException("argument is null");
+        try {
+            this.vertexCount = in.readInt();
+            if (vertexCount < 0)
+                throw new IllegalArgumentException("number of vertices in a Graph must be non-negative");
+            adj = (Bag<Integer>[]) new Bag[vertexCount];
+            for (int v = 0; v < vertexCount; v++) {
+                adj[v] = new Bag<>();
+            }
+            int E = in.readInt();
+            if (E < 0) throw new IllegalArgumentException("number of edges in a Graph must be non-negative");
+            for (int i = 0; i < E; i++) {
+                int v = in.readInt();
+                int w = in.readInt();
+                validateVertex(v);
+                validateVertex(w);
+                addEdge(v, w);
+            }
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("invalid input format in Graph constructor", e);
+        }
+    }
+
+
     public int getVertexCount() {
         return vertexCount;
     }
@@ -57,7 +85,7 @@ public class Graph {
 
     private void validateVertex(int v) {
         if (v < 0 || v >= vertexCount)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (vertexCount -1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (vertexCount - 1));
     }
 
     public void addEdge(int v, int w) {
@@ -93,7 +121,8 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyG();
+        URL url = Graph.class.getResource("/graph/tinyG.txt");
+        Graph g = new Graph(new In(url));
         System.out.println(g);
         Graph g2 = new Graph(g);
         System.out.println(g2);

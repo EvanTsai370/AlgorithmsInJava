@@ -1,5 +1,8 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.io.In;
+
+import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -87,7 +90,8 @@ public class Cycle {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyG();
+        URL url = Cycle.class.getResource("/graph/tinyG.txt");
+        Graph g = new Graph(new In(url));
         Cycle finder = new Cycle(g);
         if (finder.hasCycle()) {
             for (int v : finder.cycle()) {

@@ -1,5 +1,8 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.io.In;
+
+import java.net.URL;
 import java.util.*;
 
 public class BreadthFirstPaths {
@@ -119,7 +122,8 @@ public class BreadthFirstPaths {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyCG();
+        URL url = BreadthFirstPaths.class.getResource("/graph/tinyCG.txt");
+        Graph g = new Graph(new In(url));
         testOneSource(g);
         System.out.println();
         testMultipleSources(g);

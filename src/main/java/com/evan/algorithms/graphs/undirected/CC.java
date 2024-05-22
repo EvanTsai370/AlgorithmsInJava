@@ -1,5 +1,8 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.io.In;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +62,8 @@ public class CC {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyG();
+        URL url = CC.class.getResource("/graph/tinyG.txt");
+        Graph g = new Graph(new In(url));
         CC cc = new CC(g);
 
         // number of connected components

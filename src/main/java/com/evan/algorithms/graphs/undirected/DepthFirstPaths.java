@@ -1,5 +1,8 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.io.In;
+
+import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -51,7 +54,8 @@ public class DepthFirstPaths {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyCG();
+        URL url = DepthFirstPaths.class.getResource("/graph/tinyCG.txt");
+        Graph g = new Graph(new In(url));
         int s = 0;
         DepthFirstPaths dfs = new DepthFirstPaths(g, s);
 

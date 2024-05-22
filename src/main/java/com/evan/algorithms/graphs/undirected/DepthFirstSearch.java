@@ -1,4 +1,8 @@
-package com.evan.algorithms.graphs;
+package com.evan.algorithms.graphs.undirected;
+
+import com.evan.algorithms.io.In;
+
+import java.net.URL;
 
 public class DepthFirstSearch {
     private final boolean[] marked;
@@ -36,11 +40,12 @@ public class DepthFirstSearch {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphUtils.tinyG();
+        URL url = DepthFirstSearch.class.getResource("/graph/tinyG.txt");
+        Graph g = new Graph(new In(url));
         DepthFirstSearch search = new DepthFirstSearch(g, 0);
         for (int v = 0; v < g.getVertexCount(); v++) {
             if (search.marked(v))
-                System.out.println(v + " ");
+                System.out.print(v + " ");
         }
 
         System.out.println();
