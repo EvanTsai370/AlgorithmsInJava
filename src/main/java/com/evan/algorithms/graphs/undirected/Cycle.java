@@ -1,15 +1,14 @@
 package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.datastructures.Stack;
 import com.evan.algorithms.io.In;
 
 import java.net.URL;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class Cycle {
     private boolean[] marked;
     private int[] edgeTo;
-    private Deque<Integer> cycle;
+    private Stack<Integer> cycle;
 
     public Cycle(Graph g) {
         // need special case to identify parallel edge as a cycle
@@ -33,7 +32,7 @@ public class Cycle {
         for (int v = 0; v < g.getVertexCount(); v++) {
             for (Integer w : g.adj(v)) {
                 if (marked[w]) {
-                    cycle = new ArrayDeque<>();
+                    cycle = new Stack<>();
                     cycle.push(v);
                     cycle.push(w);
                     cycle.push(v);
@@ -52,7 +51,7 @@ public class Cycle {
     private boolean hasSelfLoop(Graph g) {
         for (int v = 0; v < g.getVertexCount(); v++) {
             for (Integer w : g.adj(v)) {
-                cycle = new ArrayDeque<>();
+                cycle = new Stack<>();
                 cycle.push(v);
                 cycle.push(v);
                 if (w == v) return true;
@@ -79,7 +78,7 @@ public class Cycle {
                 edgeTo[w] = v;
                 dfs(g, v, w);
             } else if (w != u) { // 检查环，但忽略指向 v 的边的反向(忽略v->u)
-                cycle = new ArrayDeque<>();
+                cycle = new Stack<>();
                 for (int x = v; x != w; x = edgeTo[x]) {
                     cycle.push(x);
                 }

@@ -1,10 +1,9 @@
 package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.datastructures.Stack;
 import com.evan.algorithms.io.In;
 
 import java.net.URL;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class DepthFirstPaths {
     private final boolean[] marked;
@@ -45,7 +44,7 @@ public class DepthFirstPaths {
         if (!hasPathTo(v)) {
             return null;
         }
-        Deque<Integer> path = new ArrayDeque<>();
+        Stack<Integer> path = new Stack<>();
         for (int x = v; x != s; x = edgeTo[x]) {
             path.push(x);
         }
