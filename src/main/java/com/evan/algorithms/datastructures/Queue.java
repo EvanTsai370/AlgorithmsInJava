@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+// 先进先出
 public class Queue<E> implements Iterable<E> {
     private Node<E> first;
     private Node<E> last;
@@ -78,9 +79,10 @@ public class Queue<E> implements Iterable<E> {
         @Override
         public E next() {
             if (!hasNext())
-                throw new IllegalArgumentException();
+                throw new NoSuchElementException();
+            E item = current.item;
             current = current.next;
-            return current.item;
+            return item;
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+// 后进先出
 public class Stack<E> implements Iterable<E> {
     private Node<E> first;
     private int num;
