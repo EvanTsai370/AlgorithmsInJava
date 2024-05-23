@@ -1,9 +1,11 @@
 package com.evan.algorithms.graphs.undirected;
 
+import com.evan.algorithms.datastructures.Queue;
+import com.evan.algorithms.datastructures.Stack;
 import com.evan.algorithms.io.In;
 
 import java.net.URL;
-import java.util.*;
+import java.util.List;
 
 public class BreadthFirstPaths {
     private static final Integer INF = Integer.MAX_VALUE;
@@ -50,17 +52,17 @@ public class BreadthFirstPaths {
         }
         distTo[s] = 0;
         marked[s] = true;
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(s);
+        Queue<Integer> q = new Queue<>();
+        q.enqueue(s);
 
         while (!q.isEmpty()) {
-            Integer v = q.poll();
+            Integer v = q.dequeue();
             for (int w : g.adj(v)) {
                 if (!marked[w]) {
                     edgeTo[w] = v;
                     distTo[w] = distTo[v] + 1;
                     marked[w] = true;
-                    q.offer(w);
+                    q.enqueue(w);
                 }
             }
         }
@@ -71,21 +73,21 @@ public class BreadthFirstPaths {
         for (int v = 0; v < g.getVertexCount(); v++) {
             distTo[v] = INF;
         }
-        Queue<Integer> q = new LinkedList<>();
+        Queue<Integer> q = new Queue<>();
         for (Integer s : sources) {
             marked[s] = true;
             distTo[s] = 0;
-            q.offer(s);
+            q.enqueue(s);
         }
 
         while (!q.isEmpty()) {
-            Integer v = q.poll();
+            Integer v = q.dequeue();
             for (int w : g.adj(v)) {
                 if (!marked[w]) {
                     edgeTo[w] = v;
                     distTo[w] = distTo[v] + 1;
                     marked[w] = true;
-                    q.offer(w);
+                    q.enqueue(w);
                 }
             }
         }
@@ -112,7 +114,7 @@ public class BreadthFirstPaths {
         if (!hasPathTo(v)) {
             return null;
         }
-        Deque<Integer> path = new ArrayDeque<>();
+        Stack<Integer> path = new Stack<>();
         int x;
         for (x = v; distTo[x] != 0; x = edgeTo[x]) {
             path.push(x);

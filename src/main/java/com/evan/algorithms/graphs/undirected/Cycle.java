@@ -101,5 +101,12 @@ public class Cycle {
         else {
             System.out.println("Graph is acyclic");
         }
+
+        // self loop
+        Graph g2 = new Graph(2);
+        g2.addEdge(0, 0);
+        g2.addEdge(0, 1);
+        Cycle c2 = new Cycle(g2);
+        System.out.println(c2.hasCycle() + " " + c2.cycle());
     }
 }

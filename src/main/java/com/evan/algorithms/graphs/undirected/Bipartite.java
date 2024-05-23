@@ -98,7 +98,7 @@ public class Bipartite {
     }
 
     private void validateVertex(int v) {
-        if (v < 0 || v > marked.length) {
+        if (v < 0 || v >= marked.length) {
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (marked.length - 1));
         }
     }

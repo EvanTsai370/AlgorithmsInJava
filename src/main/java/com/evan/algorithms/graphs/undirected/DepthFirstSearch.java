@@ -11,12 +11,14 @@ public class DepthFirstSearch {
     public DepthFirstSearch(Graph g, int s) {
         marked = new boolean[g.getVertexCount()];
         validateVertex(s);
+        System.out.print("visit order： ");
         dfs(g, s);
     }
 
     private void dfs(Graph g, int v) {
         count++;
         marked[v] = true;
+        System.out.print(v + " ");
         for (int w : g.adj(v)) {
             if (!marked[w]) {
                 dfs(g, w);
@@ -43,6 +45,8 @@ public class DepthFirstSearch {
         URL url = DepthFirstSearch.class.getResource("/graph/tinyG.txt");
         Graph g = new Graph(new In(url));
         DepthFirstSearch search = new DepthFirstSearch(g, 0);
+
+        System.out.println();
         for (int v = 0; v < g.getVertexCount(); v++) {
             if (search.marked(v))
                 System.out.print(v + " ");
